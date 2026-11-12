@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: twitchnt
+
+resources:
+  - 00-namespace.yaml
+  - 01-secrets-config.yaml
+  - 02-postgres.yaml
+  - 03-mediamtx.yaml
+  - 04-backend.yaml
+  - 05-frontend.yaml
+  - 06-ingress.yaml
+  - 07-hpa.yaml

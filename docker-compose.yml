@@ -1,0 +1,89 @@
+services:
+  # 1. Base de Datos Relacional PostgreSQL
+  postgres:
+    image: postgres:16-alpine
+    container_name: twitchnt-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: twitchnt
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en .env}
+      POSTGRES_DB: twitchnt_db
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - twitchnt_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U twitchnt -d twitchnt_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Servidor de Streaming de Medios (MediaMTX)
+  # Recibe RTMP desde OBS en :1935 y entrega HLS en :8888
+  mediamtx:
+    image: bluenviron/mediamtx:1.9.3
+    container_name: twitchnt-mediamtx
+    restart: unless-stopped
+    volumes:
+      - ./media-server/mediamtx.yml:/mediamtx.yml:ro
+      - ./recordings:/recordings
+    ports:
+      - "${RTMP_PORT:-1935}:1935" # RTMP Ingest (OBS Studio)
+      - "127.0.0.1:8888:8888" # HLS Streams
+      - "127.0.0.1:9997:9997" # MediaMTX Metrics API
+    depends_on:
+      - backend
+    networks:
+      - twitchnt_net
+
+  # 3. Backend API REST y WebSockets (Socket.io)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: twitchnt-backend
+    restart: unless-stopped
+    environment:
+      PORT: 5000
+      DATABASE_URL: postgres://twitchnt:${POSTGRES_PASSWORD}@postgres:5432/twitchnt_db
+      JWT_SECRET: ${JWT_SECRET:?Define JWT_SECRET en .env}
+      NODE_ENV: production
+      SEED_DEMO: ${SEED_DEMO:-true}
+      RECORDINGS_PATH: /recordings
+      CORS_ORIGIN: "*"
+      MEDIAMTX_API_URL: http://mediamtx:9997
+      MEDIAMTX_HLS_URL: http://mediamtx:8888
+    ports:
+      - "127.0.0.1:5000:5000"
+    volumes:
+      - ./recordings:/recordings
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - twitchnt_net
+
+  # 4. Frontend Clon de Twitch (React + Vite + Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: twitchnt-frontend
+    restart: unless-stopped
+    ports:
+      - "${WEB_PORT:-3000}:80"
+    depends_on:
+      - backend
+      - mediamtx
+    networks:
+      - twitchnt_net
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  twitchnt_net:
+    driver: bridge

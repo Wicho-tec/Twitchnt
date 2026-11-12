@@ -1,0 +1,34 @@
+# MediaMTX 1.9.3: private publish authentication, public username paths.
+logLevel: info
+logDestinations: [stdout]
+authMethod: http
+authHTTPAddress: http://backend:5000/api/mediamtx/auth
+authHTTPExclude:
+  - action: api
+  - action: metrics
+  - action: pprof
+api: yes
+apiAddress: :9997
+rtmp: yes
+rtmpAddress: :1935
+hls: yes
+hlsAddress: :8888
+hlsAlwaysRemux: yes
+hlsVariant: fmp4
+hlsSegmentCount: 4
+hlsSegmentDuration: 2s
+hlsAllowOrigin: "*"
+webrtc: no
+rtsp: no
+srt: no
+pathDefaults:
+  source: publisher
+  overridePublisher: no
+  record: yes
+  recordPath: /recordings/%path/%Y-%m-%d_%H-%M-%S-%f
+  recordFormat: fmp4
+  recordPartDuration: 1s
+  recordSegmentDuration: 1h
+  recordDeleteAfter: 0s
+paths:
+  all_others:

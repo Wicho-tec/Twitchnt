@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: twitchnt
+  labels:
+    app.kubernetes.io/name: twitchnt
+    app.kubernetes.io/part-of: cloud-computing-tecnm
