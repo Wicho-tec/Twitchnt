@@ -24,7 +24,8 @@ export default function ChatBox({ channelUsername }) {
 
   // Auto-scroll chat to bottom
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const feed = messagesEndRef.current?.parentElement;
+    if (feed) feed.scrollTop = feed.scrollHeight;
   };
 
   useEffect(() => {

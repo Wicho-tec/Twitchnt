@@ -1,0 +1,13 @@
+{
+  "method": "EXT-X-PROGRAM-DATE-TIME + cabecera Date del servidor + buffered.end - currentTime; estimacion HLS, no medicion fisica OBS; resolucion reloj HTTP 1 segundo",
+  "samples_seconds": [
+    6.795113,
+    7.704441,
+    7.609768,
+    7.524147,
+    7.474578
+  ],
+  "mean_seconds": 7.4216094,
+  "sample_stddev_seconds": 0.3609760185681316,
+  "segment_seconds": 2
+}

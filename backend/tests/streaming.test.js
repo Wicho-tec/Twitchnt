@@ -3,6 +3,8 @@ const assert = require('node:assert/strict');
 const { spawn } = require('node:child_process');
 const { once } = require('node:events');
 const { io } = require('../../frontend/node_modules/socket.io-client');
+const fs = require('node:fs');
+const path = require('node:path');
 const base = process.env.TEST_BASE_URL || 'http://localhost:3000';
 const host = new URL(base).hostname;
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -12,9 +14,10 @@ async function api(url, body, token) {
   return response.json();
 }
 function publish(username, key, seconds) {
-  const child = spawn(process.env.FFMPEG_PATH || 'ffmpeg', ['-hide_banner', '-loglevel', 'error', '-re', '-f', 'lavfi', '-i', 'testsrc2=size=640x360:rate=15', '-f', 'lavfi', '-i', 'sine=frequency=440:sample_rate=44100', '-t', String(seconds), '-c:v', 'libx264', '-preset', 'ultrafast', '-b:v', '500k', '-g', '30', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-f', 'flv', `rtmp://${host}:1935/live/${username}?key=${key}`], { windowsHide: true, stdio: 'ignore' });
+  const startedAt = Date.now();
+  const child = spawn(process.env.FFMPEG_PATH || 'ffmpeg', ['-hide_banner', '-loglevel', 'error', '-re', '-f', 'lavfi', '-i', 'testsrc2=size=640x360:rate=15', '-f', 'lavfi', '-i', 'anullsrc=channel_layout=stereo:sample_rate=44100', '-t', String(seconds), '-vf', "drawtext=text='%{pts\\:hms}':fontcolor=white:fontsize=32:box=1:boxcolor=black:x=10:y=10", '-c:v', 'libx264', '-preset', 'ultrafast', '-b:v', '500k', '-g', '30', '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-f', 'flv', `rtmp://${host}:1935/live/${username}?key=${key}`], { windowsHide: true, stdio: 'ignore' });
   const done = once(child, 'exit');
-  return { child, done };
+  return { child, done, startedAt };
 }
 async function main() {
   const users = [];
@@ -27,7 +30,10 @@ async function main() {
     }
     const bad = publish(users[0].user.username, 'INVALID', 8);
     assert.notEqual((await bad.done)[0], 0, 'invalid RTMP key must fail');
-    for (const user of users) streams.push(publish(user.user.username, user.channel.streamKey, 45));
+    for (const user of users) streams.push(publish(user.user.username, user.channel.streamKey, Number(process.env.TEST_SECONDS || 45)));
+    const stateDir = path.join(__dirname, '../../tmp');
+    fs.mkdirSync(stateDir, { recursive: true });
+    fs.writeFileSync(path.join(stateDir, 'streaming-state.json'), JSON.stringify(users.map((u, i) => ({ username: u.user.username, url: `${base}/${u.user.username}`, startedAt: streams[i].startedAt })), null, 2));
     await delay(12000);
     for (const user of users) {
       const channel = await api(`/channels/${user.user.username}`);

@@ -1,3 +1,10 @@
+# Twitchnt: práctica StreamLab en AWS
+
+Guía vigente: [GUIA_MANUAL_AWS.md](GUIA_MANUAL_AWS.md). Incluye arranque local,
+claves OBS privadas, seguidores, VOD, pruebas y despliegue en una EC2.
+
+La documentación siguiente corresponde a la arquitectura Kubernetes original.
+
 # 🎮 Twitchnt — Plataforma de Streaming en Vivo Cloud-Native con Kubernetes
 
 **Twitchnt** es un clon completo de la plataforma de streaming Twitch, desarrollado con arquitectura de microservicios contenerizada y lista para su despliegue y autoescalado en clústeres de **Kubernetes** en la nube.

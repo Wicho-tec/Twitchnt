@@ -32,23 +32,13 @@ export default function LoginModal() {
     }
   };
 
-  const handleQuickLogin = async (quickUsername) => {
-    setError('');
-    setLoading(true);
-    try {
-      await login(quickUsername, 'password123');
-    } catch (err) {
-      setError(err.response?.data?.error || 'Error al iniciar con cuenta de prueba');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/75 backdrop-blur-sm p-4 animate-in fade-in duration-200">
       <div className="bg-twitch-card border border-twitch-border w-full max-w-md rounded-xl shadow-2xl overflow-hidden relative">
         {/* Close Button */}
         <button
+          aria-label="Cerrar acceso"
           onClick={() => setIsAuthModalOpen(false)}
           className="absolute top-3.5 right-3.5 text-twitch-muted hover:text-white p-1 rounded-md hover:bg-twitch-hover transition"
         >
@@ -82,37 +72,6 @@ export default function LoginModal() {
               }`}
             >
               Registrarse
-            </button>
-          </div>
-        </div>
-
-        {/* Quick Demo Login */}
-        <div className="bg-twitch-bg/60 p-4 border-b border-twitch-border">
-          <div className="flex items-center space-x-1.5 text-[11px] font-semibold text-twitch-muted mb-2">
-            <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
-            <span>Acceso rápido con cuentas de prueba:</span>
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('cloud_streamer')}
-              className="text-[11px] bg-twitch-hover hover:bg-twitch-purple hover:text-white text-twitch-text py-1.5 px-2 rounded border border-twitch-border transition truncate"
-            >
-              cloud_streamer
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('tecnm_gaming')}
-              className="text-[11px] bg-twitch-hover hover:bg-twitch-purple hover:text-white text-twitch-text py-1.5 px-2 rounded border border-twitch-border transition truncate"
-            >
-              tecnm_gaming
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickLogin('chill_coder')}
-              className="text-[11px] bg-twitch-hover hover:bg-twitch-purple hover:text-white text-twitch-text py-1.5 px-2 rounded border border-twitch-border transition truncate"
-            >
-              chill_coder
             </button>
           </div>
         </div>

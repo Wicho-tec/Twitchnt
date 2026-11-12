@@ -1,0 +1,8 @@
+{
+  "InstanceId": "i-06b8d4f14242ff2b5",
+  "InstanceState": "terminated",
+  "Volumes": [],
+  "SecurityGroups": [],
+  "KeyPairs": [],
+  "LocalPemExists": false
+}

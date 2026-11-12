@@ -61,6 +61,7 @@ if ($Action -eq 'create') {
 if ($state.InstanceId) {
     $instance = (AwsJson ec2 describe-instances --instance-ids $state.InstanceId).Reservations[0].Instances[0]
     $state.IP = $instance.PublicIpAddress
+    $state.VolumeId = $instance.BlockDeviceMappings[0].Ebs.VolumeId
     SaveState
     [pscustomobject]@{ InstanceId=$state.InstanceId; State=$instance.State.Name; IP=$state.IP; Region=$Region }
 }

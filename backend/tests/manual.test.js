@@ -42,6 +42,10 @@ async function main() {
     assert.equal((await call('/channels/owner/follow', 'POST', {}, fan.token)).data.following, true);
     assert.equal((await call('/following', 'GET', undefined, fan.token)).data[0].username, 'owner');
     assert.equal((await call('/channels/owner')).data.followers, 1);
+    const metadata = await call('/channels/owner', 'PUT', { title: 'Título de prueba', category: 'Música', description: 'Descripción persistente' }, owner.token);
+    assert.equal(metadata.status, 200);
+    assert.equal((await call('/channels/owner')).data.description, 'Descripción persistente');
+    assert.equal((await call('/channels/owner', 'PUT', { title: [] }, owner.token)).status, 400);
     assert.equal((await call('/channels/owner/follow', 'POST', {}, fan.token)).data.following, false);
     assert.equal((await call('/following', 'GET', undefined, fan.token)).data.length, 0);
     const regenerated = await call('/channels/owner/regenerate-key', 'POST', {}, owner.token);

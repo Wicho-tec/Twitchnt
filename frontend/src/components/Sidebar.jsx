@@ -31,7 +31,7 @@ export default function Sidebar() {
     <aside
       className={`${
         isCollapsed ? 'w-14' : 'w-60'
-      } bg-twitch-card border-r border-twitch-border flex flex-col transition-all duration-300 h-[calc(100vh-3.5rem)] sticky top-14 select-none z-40`}
+      } hidden lg:flex shrink-0 bg-twitch-card border-r border-twitch-border flex-col transition-all duration-300 h-[calc(100vh-3.5rem)] sticky top-14 select-none z-40`}
     >
       {/* Sidebar Header */}
       <div className="p-3 flex items-center justify-between border-b border-twitch-border/40">

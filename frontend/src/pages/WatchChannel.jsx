@@ -14,6 +14,7 @@ import VideoPlayer from '../components/VideoPlayer';
 import ChatBox from '../components/ChatBox';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import { copyText } from '../services/clipboard';
 
 export default function WatchChannel() {
   const { username } = useParams();
@@ -61,8 +62,9 @@ export default function WatchChannel() {
     return () => clearInterval(interval);
   }, [username]);
 
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
+  const handleShare = async () => {
+    try { await copyText(window.location.href); }
+    catch (err) { setActionError(err.message); return; }
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -111,7 +113,7 @@ export default function WatchChannel() {
   return (
     <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
       {/* Stream & Details Area */}
-      <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
+      <div className="min-w-0 flex-1 overflow-y-auto p-4 md:p-6 space-y-4">
         {/* Video Player */}
         {vod ? (
           <div className="space-y-2">
@@ -122,7 +124,7 @@ export default function WatchChannel() {
 
 
         {/* Stream Details & Actions Bar */}
-        <div className="bg-twitch-card border border-twitch-border rounded-xl p-4 md:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-twitch-card border border-twitch-border rounded-xl p-4 md:p-5 flex flex-col xl:flex-row xl:items-center justify-between gap-4">
           {/* Channel Info */}
           <div className="flex items-start space-x-3.5">
             <div className="relative">
@@ -141,7 +143,7 @@ export default function WatchChannel() {
             </div>
 
             <div className="space-y-1">
-              <div className="flex items-center space-x-2">
+              <div className="flex flex-wrap items-center gap-2 break-all">
                 <h1 className="text-base md:text-lg font-bold text-white">
                   {channel.displayName || channel.username}
                 </h1>

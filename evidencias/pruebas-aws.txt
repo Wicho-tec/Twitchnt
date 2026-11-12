@@ -1,0 +1,2 @@
+LIVE: http://3.80.75.49/prueba_mwcvdqrr_0 http://3.80.75.49/prueba_mwcvdr17_1 http://3.80.75.49/prueba_mwcvdr8w_2
+PASS: 3 simultaneous RTMP/HLS streams, invalid key, private URLs, thumbnails, 2 viewers, chat, follows, offline state and persistent MP4 range playback

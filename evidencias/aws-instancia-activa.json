@@ -1,0 +1,19 @@
+{
+    "InstanceId": "i-06b8d4f14242ff2b5",
+    "State": "running",
+    "Type": "t3.micro",
+    "IP": "3.80.75.49",
+    "Disk": [
+        {
+            "DeviceName": "/dev/sda1",
+            "Ebs": {
+                "AttachTime": "2026-11-12T01:12:29+00:00",
+                "DeleteOnTermination": true,
+                "Status": "attached",
+                "VolumeId": "vol-098e2a927ded3f3d0",
+                "EbsCardIndex": 0
+            }
+        }
+    ],
+    "Metadata": "required"
+}

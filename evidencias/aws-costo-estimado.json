@@ -1,0 +1,16 @@
+{
+  "notice": "Costo registrado provisional de toda la cuenta; no es factura final ni costo aislado de la practica",
+  "result": [
+    {
+      "Period": {
+        "Start": "2026-11-12",
+        "End": "2026-11-13"
+      },
+      "Estimated": true,
+      "Cost": {
+        "Amount": "0",
+        "Unit": "USD"
+      }
+    }
+  ]
+}

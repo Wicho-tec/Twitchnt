@@ -13,3 +13,4 @@ deploy/known_hosts
 *.log
 .playwright-mcp/
 media-server/mediamtx.exe
+__pycache__/

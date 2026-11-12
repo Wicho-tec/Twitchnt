@@ -20,6 +20,7 @@ import {
 import { useAuth } from '../context/AuthContext';
 import VideoPlayer from '../components/VideoPlayer';
 import api from '../services/api';
+import { copyText } from '../services/clipboard';
 
 export default function Studio() {
   const { user, channel, refreshChannel, setIsAuthModalOpen } = useAuth();
@@ -41,6 +42,12 @@ export default function Studio() {
   // RTMP URL based on current host and environment
   const rtmpUrl = `rtmp://${window.location.hostname}:${import.meta.env.VITE_RTMP_PORT || '1935'}/live`;
   const obsKey = `${user?.username}?key=${streamKey}`;
+
+  useEffect(() => {
+    if (!user) return;
+    const interval = setInterval(refreshChannel, 4000);
+    return () => clearInterval(interval);
+  }, [user]);
 
   useEffect(() => {
     if (!user) return;
@@ -84,14 +91,16 @@ export default function Studio() {
     );
   }
 
-  const handleCopyKey = () => {
-    navigator.clipboard.writeText(obsKey);
+  const handleCopyKey = async () => {
+    try { await copyText(obsKey); }
+    catch (err) { window.alert(err.message); return; }
     setCopiedKey(true);
     setTimeout(() => setCopiedKey(false), 2000);
   };
 
-  const handleCopyUrl = () => {
-    navigator.clipboard.writeText(rtmpUrl);
+  const handleCopyUrl = async () => {
+    try { await copyText(rtmpUrl); }
+    catch (err) { window.alert(err.message); return; }
     setCopiedUrl(true);
     setTimeout(() => setCopiedUrl(false), 2000);
   };

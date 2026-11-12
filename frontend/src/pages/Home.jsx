@@ -69,15 +69,15 @@ export default function Home() {
           <div className="relative z-10 max-w-2xl space-y-3">
             <div className="inline-flex items-center space-x-2 bg-twitch-purple/20 border border-twitch-purple/40 text-twitch-purple px-3 py-1 rounded-full text-xs font-semibold">
               <Cloud className="w-3.5 h-3.5" />
-              <span>Plataforma Cloud Nativa & Kubernetes</span>
+              <span>En vivo y a tu ritmo</span>
             </div>
 
             <h1 className="text-2xl md:text-3xl font-black text-white tracking-tight">
-              Transmisiones en Vivo de Alta Velocidad con MediaMTX y K8s
+              Comparte lo que te apasiona, en vivo
             </h1>
 
             <p className="text-sm text-twitch-muted leading-relaxed">
-              Emite desde OBS Studio vía RTMP, distribuye en HLS de baja latencia con balanceo de carga en clúster y chatea en tiempo real con WebSockets.
+              Descubre creadores, conversa con su comunidad y vuelve a ver tus transmisiones favoritas.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center gap-3">

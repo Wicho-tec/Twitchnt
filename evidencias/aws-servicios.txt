@@ -1,0 +1,10 @@
+NAME                IMAGE                       COMMAND                  SERVICE    CREATED          STATUS                   PORTS
+twitchnt-backend    twitchnt-backend            "docker-entrypoint.s…"   backend    4 minutes ago    Up 3 minutes (healthy)   127.0.0.1:5000->5000/tcp
+twitchnt-frontend   twitchnt-frontend           "/docker-entrypoint.…"   frontend   55 seconds ago   Up 43 seconds            0.0.0.0:80->80/tcp, [::]:80->80/tcp
+twitchnt-mediamtx   bluenviron/mediamtx:1.9.3   "/mediamtx"              mediamtx   4 minutes ago    Up 3 minutes             127.0.0.1:8888->8888/tcp, 0.0.0.0:1935->1935/tcp, [::]:1935->1935/tcp, 127.0.0.1:9997->9997/tcp
+twitchnt-postgres   postgres:16-alpine          "docker-entrypoint.s…"   postgres   4 minutes ago    Up 4 minutes (healthy)   127.0.0.1:5432->5432/tcp
+               total        used        free      shared  buff/cache   available
+Mem:             909         461         131           5         440         447
+Swap:           1023         160         863
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/root       8.7G  4.9G  3.8G  57% /
